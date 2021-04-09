@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Naidan Tu, Bo Zhang" />
+
+
+<title>bmggum: Bayesian Estimation of Multidimensional Generalized Graded Unfolding Model</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">bmggum: Bayesian Estimation of Multidimensional Generalized Graded Unfolding Model</h1>
+<h4 class="author">Naidan Tu, Bo Zhang</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#tutorial">Tutorial</a>
+<ul>
+<li><a href="#step-1-input-data">Step 1: Input data</a></li>
+<li><a href="#step-2-estimate-using-the-function-bmggum">Step 2: Estimate using the function bmggum()</a></li>
+<li><a href="#step-3-extract-the-estimated-results-using-the-function-extract">Step 3: Extract the estimated results using the function extract()</a></li>
+<li><a href="#step-4-obtain-model-fit-statistics-using-the-function-modfit">Step 4: Obtain model fit statistics using the function modfit()</a></li>
+<li><a href="#step-5-plotting-using-the-function-bayesplot">Step 5: Plotting using the function bayesplot()</a></li>
+<li><a href="#step-6-plotting-observable-response-categories-orcs-for-items-using-the-function-itemplot">Step 6: Plotting observable response categories (ORCs) for items using the function itemplot()</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The bmggum package was developed to estimate Multidimensional Unfolding Models (MGGUM) using Bayesian method. Specifically,the R package <strong>rstan</strong> that utilizes the Hamiltonian Monte Carlo sampling algorithm was used for estimation. Below are some important features of the bmggum package:</p>
+<ol style="list-style-type: decimal">
+<li><p>Allows users to incorporate person covariates (e.g., age, gender, education) into the estimation process to improve estimation accuracy.</p></li>
+<li><p>Automatically deals with missing data in a way similar to how full information maximum likelihood handles missing data.</p></li>
+<li><p>Allows users to estimate the <strong>multidimensional version</strong> of three unfolding models that are available in the software GGUM2004 (Roberts, Fang, Cui, &amp; Wang, 2006).</p>
+<ul>
+<li>UM8: The Generalized Graded Unfolding Model (GGUM).</li>
+<li>UM4: The Partial Credit Unfolding Model, which is the GGUM with all alphas constrained to 1.</li>
+<li>UM7: The Generalized Rating Scale Unfolding Model, which is the GGUM with equal taus across items.</li>
+</ul></li>
+<li><p>Five functions (i.e., bmggum( ), extract( ), modfit( ), bayesplot( ), and itemplot( )) are provided for model estimation, results extraction, model fit examination (e.g.,waic, loo, chisq/df), and plottings, respectively. See below for function details.</p></li>
+</ol>
+</div>
+<div id="tutorial" class="section level2">
+<h2>Tutorial</h2>
+<div id="step-1-input-data" class="section level3">
+<h3>Step 1: Input data</h3>
+<p>A randomly generated dataset is used as an example in this tutorial. The first input (<strong>GGUM.Data</strong>) is a dataset including responses from 10 respondents answering a 4-item measure on a 4-point Likert scale measuring 2 traits. Missingness was also simulated for demonstration. Note that data is stored in a wide format.</p>
+<table>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>item 1</th>
+<th>item 2</th>
+<th>item 3</th>
+<th>item 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>4</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>NA</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>NA</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>NA</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1</td>
+<td>NA</td>
+<td>NA</td>
+<td>3</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>NA</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>1</td>
+<td>NA</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>The second input (<strong>delindex</strong>) is a two-row matrix specifying item numbers and the positivity/negativity of items. Users need to specify the <strong>delindex</strong> by themselves. The first row is item number (i.e., 1, 2, 3, 4…), and the second row indicates signs of delta of each item (-1, 0, 1). For items with negative deltas, “-1” should be assigned; for items with positive deltas, “1” should be assigned; for uncertain items whose deltas may be either positive or negative (e.g., intermediate items), “0” should assigned. We recommend at least two positive and two negative items per trait for better estimation. In this example, item 1 and 3 are negative, and item 2 and 4 are positive.</p>
+<table>
+<thead>
+<tr class="header">
+<th>row</th>
+<th>item 1</th>
+<th>item 2</th>
+<th>item 3</th>
+<th>item 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>-1</td>
+<td>1</td>
+<td>-1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>The next part of the data is a row vector mapping items to traits. For example, c(1, 1, 1, 2, 2, 2) means that the first 3 items measure trait 1 and the last 3 items measure trait 2. In the current example, item 1 and 2 measure trait 1, and item 3 and 4 measure trait 2. Note that the current implementation of bmggum cannot deal with within-item multidimensionality (e.g., an item loading on two or more factors).</p>
+<table>
+<thead>
+<tr class="header">
+<th>row</th>
+<th>item 1</th>
+<th>item 2</th>
+<th>item 3</th>
+<th>item 4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+</tr>
+</tbody>
+</table>
+<p>If person covariates are to be included, a p*c person covariate matrix where p equals sample size and c equals the number of covariates is also needed. In this example, 1 person covariate is included. However, the default is a pure measurement model with no person covariate.</p>
+<table>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>covariate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0.70</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>-1.25</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0.48</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>-0.47</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0.86</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>1.25</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>1.17</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>-1.35</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>-0.84</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>-0.55</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="step-2-estimate-using-the-function-bmggum" class="section level3">
+<h3>Step 2: Estimate using the function bmggum()</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit the MGGUM model</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;mod &lt;- bmggum(GGUM.Data=GGUM.Data, delindex=delindex, trait=2, ind=ind, option=4, model=&quot;UM8&quot;, covariate=covariate)</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;mod</span></span></code></pre></div>
+<p>The function bmggum() implements full Bayesian estimation of MGGUM using rstan. The returned object stores information including the (1)stanfit object (item parameter estimates in this object are organized in delta-ascending order), (2)estimated item parameters, (3)estimated person parameters, (4)correlations among traits, (5)regression coefficients linking person covariates to each trait, (6)response data (excluding respondents who endorse a single option across all items), and (7)the input row vector mapping each item to each trait. Note that when covariates are included, output (4) represents residual correlations among the traits after controlling for the covariates. If standardized regression coefficients are expected, users can standardize covariates before inputting them. Below are a list of other arguments it contains, the default of which can be manually replaced:</p>
+<ul>
+<li><strong>model</strong>. The default is the MGGUM. To fit the Multidimensional Generalized Rating Scale Unfolding Model, input model=“UM7”. Similarly, to fit the Multidimensional Partial Credit Unfolding Model, input model=“UM4”.</li>
+<li><strong>iter</strong>. The number of iterations. The default is 1000. See documentation for rstan for more details.</li>
+<li><strong>chains</strong>. The number of chains. The default value is 3. See documentation for rstan for more details.</li>
+<li><strong>warmup</strong>. The number of warmups to discard. The default value is the first half of the iterations. See documentation for rstan for more details.</li>
+<li><strong>adapt_delta</strong>. Target average proposal acceptance probability during Stan’s adaptation period. The default value is 0.90. See documentation for rstan for more details.</li>
+<li><strong>max_treedepth</strong>. Cap on the depth of the trees evaluated during each iteration. The default value is 15. See documentation for rstan for more details.</li>
+<li><strong>init</strong>. Initial values for estimated parameters. The default is random initial values. See documentation for rstan for more details.</li>
+<li><strong>thin</strong>. Thinning. The default value is 1. See documentation for rstan for more details.</li>
+<li><strong>core</strong>. The number of computer cores used for parallel computing. The default value is 2. Users can use the function <strong>detectCores()</strong>in the package <strong>parallel</strong> to detect the number of cores of their pc/laptop. Usually, users just need to set this number equal to the number of <strong>chains</strong>. In the case of many chains, we recommend users to leave at least one core unoccupied to avoid R crash.</li>
+<li><strong>ma</strong>. Mean of the prior distribution for alphas, which follows a lognormal distribution. The default value is 0.</li>
+<li><strong>va</strong>. Standard deviation of the prior distribution for alphas. The default value is 0.5.</li>
+<li><strong>mdne</strong>. Mean of the prior distribution for negative deltas, which follows a normal distribution. The default value is -1.</li>
+<li><strong>mdnu</strong>. Mean of the prior distribution for neutral deltas, which follows a normal distribution. The default value is 0.</li>
+<li><strong>mdpo</strong>. Mean of the prior distribution for positive deltas, which follows a normal distribution. The default value is 1.</li>
+<li><strong>vd</strong>. Standard deviation of the prior distribution for deltas. The default value is 1.</li>
+<li><strong>mt</strong>. Means of the prior distributions for taus, which follows a normal distribution. The default values are seq(-3,0,3/(options-1)). The last one has to be 0. For items with only 2 options, we recommend to use (-2,0) as means of priors.</li>
+<li><strong>vt</strong>. Standard deviation of the prior distribution for taus. The default value is 2.</li>
+</ul>
+</div>
+<div id="step-3-extract-the-estimated-results-using-the-function-extract" class="section level3">
+<h3>Step 3: Extract the estimated results using the function extract()</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract theta estimates </span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;theta &lt;- extract(x=mod, pars=&#39;theta&#39;)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;theta</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn theta estimates into p*trait matrix where p equals sample size and trait equals the number of latent traits</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;theta &lt;- theta[,1]</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># nrow=trait</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;theta &lt;- matrix(theta, nrow=2, byrow = TRUE)  </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;theta &lt;- t(theta)</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># theta estimates in p*trait matrix format</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;theta</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract tau estimates </span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;tau &lt;- extract(x=mod, pars=&#39;tau&#39;)</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;tau</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn the tau estimates into I*(option-1) matrix where I equals the number of items and option equals the number of response options</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;tau &lt;- tau[,1]</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># nrow=option-1</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;tau &lt;- matrix(tau, nrow=3, byrow = TRUE)  </span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;tau &lt;- t(tau)</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># tau estimates in I*(option-1) matrix format</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;tau</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract lambda estimates </span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;lambda &lt;- extract(x=mod, pars=&#39;lambda&#39;)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co"># lambda[1,1] is the coefficient linking person covariate 1 to latent trait 1</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># lambda[1,2] is the coefficient linking person covariate 1 to latent trait 2</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;lambda</span></span></code></pre></div>
+<p>The function extract() extracts bmggum estimation results.</p>
+<ul>
+<li><strong>pars</strong>. Names of extracted parameters. They can be “theta” (Person trait estimates), “alpha” (Item discrimination parameters), “delta” (Item location parameters), “tau” (Item threshold parameters), “cor” (Correlations among latent traits), “lambda” (Regression coefficients linking person covariates to latent traits), “data” (GGUM.Data after deleting respondents who endorse the same response options across all items), “fit” (The stanfit object), and “dimension” (The input row vector mapping each item to each trait). Note that when the model is UM4 in which alpha is fixed to 1, the extracted alpha is a n*1 matrix where n equals to the number of items.</li>
+</ul>
+</div>
+<div id="step-4-obtain-model-fit-statistics-using-the-function-modfit" class="section level3">
+<h3>Step 4: Obtain model fit statistics using the function modfit()</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain the model fit statistic loo</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;loo &lt;- modfit(mod)</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;loo</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain the model fit statistic waic </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;waic &lt;- modfit(x=mod, index=&#39;waic&#39;)</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;waic</span></span></code></pre></div>
+</div>
+<div id="step-5-plotting-using-the-function-bayesplot" class="section level3">
+<h3>Step 5: Plotting using the function bayesplot()</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain density plots for all alphas. </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;bayesplot(x=mod, pars=&#39;alpha&#39;, plot=&#39;density&#39;, inc_warmup=FALSE)</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain trace plots for the discrimination parameter of the first two items (alpha[1] and alpha[2]).</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;bayesplot(x=mod, pars=paste0(&quot;alpha[&quot;,1:2,&quot;]&quot;), plot=&#39;trace&#39;, inc_warmup=FALSE)</span></span></code></pre></div>
+<p>The function bayesplot() provides plots including density plots, trace plots, and auto-correlation plots to aid model convergence diagnosis. The smoothness of density plots, the stationary status of trace plots, and low degree of auto-correlation in auto-correlation plots all indicate good convergence. In this example, the density plots for alpha look ok. More iterations are needed to achieve stationary status of trace plots for alpha[1] and alpha[2]. The auto-correlation for theta[1,2] is high, and increase thinning might help. Note that results presented above are just for demonstration and may not reflect typical GGUM results.</p>
+<ul>
+<li><strong>pars</strong>. Names of plotted parameters. They can be “theta”, “alpha”, “delta”, “tau”, “cor”, “lambda”, or a subset of parameters (e.g., paste0(“alpha[&quot;,1:2,&quot;]”), paste0(“theta[1,&quot;,1:2,&quot;]”)).</li>
+<li><strong>plot</strong>. Types of plots. They can be “density”, “trace”, or “autocorrelation”.</li>
+<li><strong>inc_warmup</strong>. Whether to include warmup iterations or not when plotting. The default is FALSE.</li>
+</ul>
+</div>
+<div id="step-6-plotting-observable-response-categories-orcs-for-items-using-the-function-itemplot" class="section level3">
+<h3>Step 6: Plotting observable response categories (ORCs) for items using the function itemplot()</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain item plots with ORCs for all items. </span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;itemplot(x=mod)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtain item plots with ORCs for item 2, 3, 4.</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;itemplot(x=mod, items = 2:4)</span></span></code></pre></div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
